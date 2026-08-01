@@ -30,14 +30,15 @@ $sql_insert = "INSERT INTO utilisateurs (nom, prenom, annee_naissance, email) VA
 $stmt = $connexion->prepare($sql_insert);
 $stmt->bind_param("ssis", $nom, $prenom, $annee_naissance, $email);
 
-if ($stmt->execute()) {
+try {
+    $stmt->execute();
     $age = date("Y") - $annee_naissance;
     echo "Utilisateur ajouté ! Âge : " . $age . " ans.";
-} else {
+} catch (mysqli_sql_exception $e) {
     if ($connexion->errno === 1062) {
         echo "Erreur : cet email existe déjà (doit être unique).";
     } else {
-        echo "Erreur ajout : " . $stmt->error;
+        echo "Erreur ajout : " . $e->getMessage();
     }
 }
 
