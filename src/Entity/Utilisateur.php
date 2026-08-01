@@ -77,4 +77,8 @@ class Utilisateur
 
         return $this;
     }
+     public function getAge(): int
+    {
+        return (int) date("Y") - $this->aneeNaissance;
+    }
 }
